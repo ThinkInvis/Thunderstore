@@ -70,13 +70,15 @@ def capture_exception(*args, **kwargs):
     capture_sentry_exception(*args, **kwargs)
 
 
-def make_full_url(request: Optional[HttpRequest], path: str):
+def build_full_url(request: Optional[HttpRequest], path: str):
     """Build an URL relative to a request using the proper request scheme"""
     url = path
     if request:
         url = request.build_absolute_uri(url)
     if settings.PROTOCOL == "https://" and url.startswith("http://"):
         url = f"https://{url[7:]}"
+    if not url.startswith(settings.PROTOCOL):
+        url = f"{settings.PROTOCOL}{url}"
     return url
 
 

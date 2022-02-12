@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 from django.test import RequestFactory
 
 from thunderstore.core.utils import (
+    build_full_url,
     check_validity,
-    make_full_url,
     sanitize_filename,
     sanitize_filepath,
     validate_filepath_prefix,
@@ -32,8 +32,8 @@ def test_make_full_url(scheme: str, rf: RequestFactory, settings: Any) -> None:
     settings.PROTOCOL = scheme
     request = rf.get("")
     expected = f"{scheme}testserver/test/path/"
-    assert make_full_url(request, "/test/path/") == expected
-    assert make_full_url(None, "/test/path/") == "/test/path/"
+    assert build_full_url(request, "/test/path/") == expected
+    assert build_full_url(None, "/test/path/") == "/test/path/"
 
 
 @pytest.mark.parametrize(
